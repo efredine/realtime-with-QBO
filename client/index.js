@@ -1,4 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Connect from "./components/Connect";
+import Index from "./components/Index";
 
-ReactDOM.render(<h1>Hello World!</h1>, document.getElementById("root"));
+function App() {
+  return (
+    <>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/connect/">Connect</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <Route path="/" exact component={Index} />
+      <Route path="/connect/" component={Connect} />
+    </>
+  );
+}
+
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById("root")
+);
