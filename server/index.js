@@ -1,20 +1,6 @@
-const { GraphQLServer } = require("graphql-yoga");
 const express = require("express");
 const path = require("path");
-
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: (_, { name }) => `Hello ${name || "World"}`
-  }
-};
-
-const server = new GraphQLServer({ typeDefs, resolvers });
+const server = require("./createServer")();
 
 server.express.use(express.static("dist"));
 

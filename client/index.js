@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Connect from "./components/Connect";
-import Index from "./components/Index";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo-hooks";
+import Connect from "./components/Connect";
+import Index from "./components/Index";
+import PrivateRoute from "./components/PrivateRoute";
 
 const client = new ApolloClient({
   uri: "http://localhost:3000/graphql"
@@ -13,18 +14,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/connect/">Connect</Link>
-          </li>
-        </ul>
-      </nav>
-
-      <Route path="/" exact component={Index} />
+      <PrivateRoute path="/" exact component={Index} />
       <Route path="/connect/" component={Connect} />
     </>
   );

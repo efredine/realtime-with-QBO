@@ -1,0 +1,17 @@
+type Query {
+  hello(name: String): String!
+  me: User
+}
+
+type SuccessMessage {
+  message: String
+}
+
+type User {
+  name: String!
+}
+
+type Mutation {
+  connect: User
+  signOut: SuccessMessage
+}
