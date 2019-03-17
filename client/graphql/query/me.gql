@@ -1,5 +1,0 @@
-query ME_QUERY {
-  me {
-    name
-  }
-}

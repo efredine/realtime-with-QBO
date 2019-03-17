@@ -1,7 +1,9 @@
-const { getMe } = require("./auth");
+const { getUser, getAuthUri } = require("../auth");
 
 const Query = {
-  hello: (_, { name }) => `Hello ${name || "World"}`,
-  me: getMe
+  currentUser: (parent, args, ctx, info) => {
+    return getUser(ctx.request.userId);
+  },
+  getAuthUri
 };
 module.exports = Query;

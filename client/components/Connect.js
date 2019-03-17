@@ -1,30 +1,38 @@
-import React from "react";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import React, { useState } from "react";
+import { useQuery, useMutation, useApolloClient } from "react-apollo-hooks";
 import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
-import ME_QUERY from "../graphql/query/me.gql";
+import GET_CURRENT_USER_QUERY from "../graphql/query/getCurrentUser.gql";
 
-const CONNECT_MUTATION = gql`
-  mutation CONNECT_MUTATION {
-    connect {
-      name
+const GET_AUTH_URI = gql`
+  query GET_AUTH_URI {
+    getAuthUri {
+      uri
     }
   }
 `;
 
 export default function Connect(props) {
-  const connectMutation = useMutation(CONNECT_MUTATION, {
-    refetchQueries: [{ query: ME_QUERY }]
-  });
-  const { data, loading, error } = useQuery(ME_QUERY);
+  const { data, loading, error } = useQuery(GET_CURRENT_USER_QUERY);
+  const [connecting, setConnecting] = useState(false);
+  const client = useApolloClient();
+
+  const connect = () => {
+    setConnecting(true);
+    client.query({ query: GET_AUTH_URI }).then(({ data }) => {
+      const redirectUri = data.getAuthUri.uri;
+      window.location.href = redirectUri;
+    });
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
   if (error) {
     return <p>ERROR</p>;
   }
-  const { me } = data;
-  if (me) {
+  const { currentUser } = data;
+  if (currentUser) {
     return (
       <Redirect
         to={{
@@ -37,7 +45,9 @@ export default function Connect(props) {
   return (
     <>
       <h2>Connect</h2>
-      <button onClick={connectMutation}>Connect</button>
+      <button onClick={connect} disabled={connecting}>
+        Connect to QuickBooksOnline
+      </button>
     </>
   );
 }

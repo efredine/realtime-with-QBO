@@ -1,8 +1,11 @@
 type Query {
-  hello(name: String): String!
-  me: User
+  currentUser: User
+  getAuthUri: AuthUri
 }
 
+type AuthUri {
+  uri: String!
+}
 type SuccessMessage {
   message: String
 }
