@@ -5,7 +5,11 @@ function getMe() {
 }
 
 function connect() {
-  me = { name: "Eric" };
+  me = {
+    id: "001",
+    name: "Eric"
+  };
+  return me;
 }
 
 function signOut() {
