@@ -1,5 +1,10 @@
 query CURRENT_USER_QUERY {
   currentUser {
-    name
+    id
+    email
+    emailVerified
+    familyName
+    givenName
+    sub
   }
 }

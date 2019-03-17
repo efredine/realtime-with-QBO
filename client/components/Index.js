@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import AuthButton from "./AuthButton";
-function Index(props) {
+function Index({ currentUser }) {
+  console.log({ currentUser });
   return (
     <>
-      <h2>hello {props.currentUser.name}</h2>
+      <h2>Hello {currentUser.givenName}</h2>
       <AuthButton />
     </>
   );

@@ -12,7 +12,11 @@ type SuccessMessage {
 
 type User {
   id: ID!
-  name: String!
+  email: String
+  emailVerified: Boolean
+  familyName: String
+  givenName: String
+  sub: String
 }
 
 type Mutation {

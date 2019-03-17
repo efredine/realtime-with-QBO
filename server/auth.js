@@ -38,7 +38,8 @@ async function handleOauthRedirect(request, response) {
   const oauthClient = pendingAuthorizations.get(state);
   try {
     const authResponse = await oauthClient.createToken(request.url);
-    const user = { id: state, name: "Eric" };
+    const userInfo = await oauthClient.getUserInfo();
+    const user = { id: state, ...userInfo.getJson() };
     const oauthToken = authResponse.getJson();
     users.set(state, {
       user,
