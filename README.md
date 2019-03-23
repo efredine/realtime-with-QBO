@@ -8,4 +8,35 @@ So far it just allows a user to sign in to QuickBooks Online using OAuth 2. But 
 
 Next up, I'm going to start fetching some actual data. Going to use Bills because that's what I know.
 
-_Name is not meaningful in any way nod to Real-time With Bill Maher._
+# installation
+
+You'll need to sign up for a [QuickBooks Developer account](https://developer.intuit.com/app/developer/qbo/docs/get-started).
+
+```bash
+git clone git@github.com:efredine/realtime-with-QBO.git
+cd realtime-with-QBO
+npm install
+cp env.example .env
+```
+
+Edit .env to change the JWT secret and enter your client id and client secret.
+
+```env
+APP_SECRET="jwtsecret123"
+
+#OAuth2 App Configuration
+OAUTH_CLIENT_ID="Q05Rq5al8tYdc56TlCyawlFbw0ngry7XRBwcSqEBGGKJ75TQVc"
+OAUTH_CLIENT_SECRET="YEhUHAzm0N2ZbNmMPpg9XCq5UQAvmLS3N22RLLPi"
+OAUTH_ENVIRONMENT="sandbox"
+OAUTH_REDIRECT_URI="http://localhost:3000/oauth2redirect"
+```
+
+On the QBO side, you'll need to enter the Oauth Redirect URL as described in the [Quickbooks documentation on authentication and authorization](https://developer.intuit.com/app/developer/qbo/docs/develop/authentication-and-authorization#code-samples-and-sdks).
+
+```bash
+npm run dev
+```
+
+Open your browser and navigate to `http://localhost:3000` and connect to your QuickBooks Online sandbox.
+
+_Name is a not meaningful in any way nod to Real-time With Bill Maher._
