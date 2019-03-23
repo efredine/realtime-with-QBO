@@ -33,7 +33,6 @@ async function getAuthUri() {
 }
 
 async function handleOauthRedirect(request, response) {
-  // const parsedUrl = parse(url, true);
   const state = request.query.state;
   const oauthClient = pendingAuthorizations.get(state);
   try {
@@ -43,8 +42,10 @@ async function handleOauthRedirect(request, response) {
     const oauthToken = authResponse.getJson();
     users.set(state, {
       user,
+      oauthClient,
       oauthToken
     });
+    pendingAuthorizations.delete(state);
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     response.cookie("token", token, {
       httpOnly: true,
@@ -67,9 +68,24 @@ function handleSignOut(request, response) {
   users.delete(id);
 }
 
+function authMiddleWare(req, res, next) {
+  const { token } = req.cookies;
+  if (token) {
+    const { userId } = jwt.verify(token, process.env.APP_SECRET);
+    req.userId = userId;
+    if (users.has(userId)) {
+      req.user = users.get(userId);
+    }
+  }
+  if (req.path.startsWith("/oauth2redirect")) {
+    return handleOauthRedirect(req, res);
+  }
+  next();
+}
+
 module.exports = {
   getUser,
   getAuthUri,
   handleSignOut,
-  handleOauthRedirect
+  authMiddleWare
 };
