@@ -2,14 +2,10 @@ const OAuthClient = require("intuit-oauth");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const { join } = require("path");
+const initializeUsers = require("./users");
 
 require("dotenv").config();
-
 const randomBytesPromisified = promisify(randomBytes);
-const writeFile = promisify(fs.writeFile);
-const dataFile = join(__dirname, "/.data");
 
 const config = {
   clientId: process.env.OAUTH_CLIENT_ID,
@@ -18,48 +14,16 @@ const config = {
   redirectUri: process.env.OAUTH_REDIRECT_URI
 };
 
-const pendingAuthorizations = new Map();
-const users = initializeUsers();
-
-function initializeUsers() {
-  try {
-    const userData = JSON.parse(fs.readFileSync(dataFile));
-    const users = new Map();
-    for (let userId of Object.keys(userData)) {
-      const { user, oauthToken } = userData[userId];
-      const oauthClient = new OAuthClient({
-        ...config,
-        token: oauthToken
-      });
-      users.set(userId, { user, oauthToken, oauthClient });
-      oauthClient.refresh();
-    }
-    return users;
-  } catch (e) {
-    console.log("No data file to read.");
-    console.log(e.message);
-    return new Map();
-  }
-}
-
-function saveUsers() {
-  const data = {};
-  users.forEach(({ user, oauthToken }, userId) => {
-    data[userId] = { user, oauthToken };
+const users = initializeUsers(({ user, oauthToken }) => {
+  const oauthClient = new OAuthClient({
+    ...config,
+    token: oauthToken
   });
-  const jsonData = JSON.stringify(data);
-  writeFile(dataFile, jsonData);
-}
+  oauthClient.refresh();
+  return { user, oauthToken, oauthClient };
+});
 
-function addUser(userId, data) {
-  users.set(userId, data);
-  saveUsers();
-}
-
-function removeUser(userId) {
-  users.delete(userId);
-  saveUsers();
-}
+const pendingAuthorizations = new Map();
 
 async function getAuthUri() {
   const state = (await randomBytesPromisified(20)).toString("hex");
@@ -82,7 +46,7 @@ async function handleOauthRedirect(request, response) {
   const state = request.query.state;
   const oauthClient = pendingAuthorizations.get(state);
   try {
-    const authResponse = await oauthClient.createToken(request.url);
+    await oauthClient.createToken(request.url);
     const userInfo = await oauthClient.getUserInfo();
     const user = { id: state, ...userInfo.getJson() };
     const oauthToken = oauthClient.getToken();
@@ -90,7 +54,7 @@ async function handleOauthRedirect(request, response) {
     oauthToken.x_refresh_token_expires_in =
       Date.now() + oauthToken.x_refresh_token_expires_in * 1000;
 
-    addUser(state, {
+    users.set(state, {
       user,
       oauthClient,
       oauthToken
@@ -115,7 +79,7 @@ function getUser(id) {
 function handleSignOut(request, response) {
   response.clearCookie("token");
   const id = request.userId;
-  removeUser(id);
+  users.delete(id);
 }
 
 function authMiddleWare(req, res, next) {
