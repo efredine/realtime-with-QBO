@@ -7,6 +7,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import styled from "styled-components";
 
+import Money from "../Money";
+
 const StyledTableContainer = styled(Paper)`
   width: 100%;
   margin-top: 3rem;
@@ -33,6 +35,7 @@ const BillRow = ({ bill, index }) => {
     DocNumber,
     VendorRef,
     DueDate,
+    CurrencyRef,
     Balance,
     TotalAmt
   } = bill;
@@ -42,8 +45,12 @@ const BillRow = ({ bill, index }) => {
       <TableCell>{DocNumber}</TableCell>
       <TableCell>{VendorRef.name}</TableCell>
       <TableCell>{DueDate}</TableCell>
-      <TableCell align="right">{Balance}</TableCell>
-      <TableCell align="right">{TotalAmt}</TableCell>
+      <TableCell align="right">
+        <Money amount={Balance} currency={CurrencyRef.value} />
+      </TableCell>
+      <TableCell align="right">
+        <Money amount={TotalAmt} currency={CurrencyRef.value} />
+      </TableCell>
     </TableRow>
   );
 };
