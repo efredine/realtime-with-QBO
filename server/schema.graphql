@@ -1,6 +1,49 @@
 type Query {
   currentUser: User
   getAuthUri: AuthUri
+  getBills: [Bill]
+}
+
+type APAccountRef {
+  value: ID!
+  name: String
+}
+
+type CurrencyRef {
+  value: String!
+  name: String
+}
+
+type DepartmentRef {
+  value: ID!
+  name: String
+}
+
+type MetaData {
+  CreateTime: String
+  LastUpdatedTime: String
+}
+
+type VendorRef {
+  value: ID!
+  name: String
+}
+
+type Bill {
+  Id: ID!
+  SyncToken: String!
+  VendorRef: VendorRef!
+
+  APAccountRef: APAccountRef
+  Balance: Float
+  CurrencyRef: CurrencyRef
+  DepartmentRef: DepartmentRef
+  DueDate: String
+  DocNumber: String
+  MetaData: MetaData
+  PrivateNote: String
+  TotalAmt: Float
+  TxnDate: String
 }
 
 type AuthUri {

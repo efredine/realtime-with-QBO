@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery, useMutation, useApolloClient } from "react-apollo-hooks";
+import { useQuery, useApolloClient } from "react-apollo-hooks";
 import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import GET_CURRENT_USER_QUERY from "../graphql/query/getCurrentUser.gql";

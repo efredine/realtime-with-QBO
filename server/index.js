@@ -12,7 +12,6 @@ server.express.use(authMiddleWare);
 server.express.use(express.static("dist"));
 
 server.use(async (req, res, next) => {
-  console.log(req.path);
   if (req.path.startsWith("/graphql") || req.path.startsWith("/playground")) {
     return next();
   }

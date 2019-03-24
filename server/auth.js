@@ -74,8 +74,22 @@ function authMiddleWare(req, res, next) {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     req.userId = userId;
     if (users.has(userId)) {
-      req.user = users.get(userId);
+      const { user, oauthClient } = users.get(userId);
+      req.user = user;
+      req.oauthClient = oauthClient;
     }
+  }
+  // todo only enable this functionality during development
+  if (req.path.startsWith("/graphql")) {
+    const { headers } = req;
+    const headerEmail = headers["x-email"];
+    users.forEach(({ user, oauthClient }, userId) => {
+      if (user.email.localeCompare(headerEmail) === 0) {
+        req.userId = userId;
+        req.user = user;
+        req.oauthClient = oauthClient;
+      }
+    });
   }
   if (req.path.startsWith("/oauth2redirect")) {
     return handleOauthRedirect(req, res);

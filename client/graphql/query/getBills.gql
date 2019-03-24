@@ -1,0 +1,32 @@
+query GET_BILLS_QUERY {
+  getBills {
+    Id
+    SyncToken
+    VendorRef {
+      value
+      name
+    }
+    APAccountRef {
+      value
+      name
+    }
+    Balance
+    CurrencyRef {
+      value
+      name
+    }
+    DepartmentRef {
+      value
+      name
+    }
+    DueDate
+    DocNumber
+    MetaData {
+      CreateTime
+      LastUpdatedTime
+    }
+    PrivateNote
+    TotalAmt
+    TxnDate
+  }
+}
