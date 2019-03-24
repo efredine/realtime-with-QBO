@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useQuery, useApolloClient } from "react-apollo-hooks";
+import { useApolloClient } from "react-apollo-hooks";
 import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import Button from "@material-ui/core/Button";
 
-import GET_CURRENT_USER_QUERY from "../graphql/query/getCurrentUser.gql";
+import useCurrentUser from "../hooks/useCurrentUser";
 
 const GET_AUTH_URI = gql`
   query GET_AUTH_URI {
@@ -15,7 +15,7 @@ const GET_AUTH_URI = gql`
 `;
 
 export default function Connect(props) {
-  const { data, loading, error } = useQuery(GET_CURRENT_USER_QUERY);
+  const { currentUser, loading, error } = useCurrentUser();
   const [connecting, setConnecting] = useState(false);
   const client = useApolloClient();
 
@@ -33,7 +33,6 @@ export default function Connect(props) {
   if (error) {
     return <p>ERROR</p>;
   }
-  const { currentUser } = data;
   if (currentUser) {
     return (
       <Redirect

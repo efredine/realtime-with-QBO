@@ -1,17 +1,16 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useQuery } from "react-apollo-hooks";
-import GET_CURRENT_USER_QUERY from "../graphql/query/getCurrentUser.gql";
+
+import useCurrentUser from "../hooks/useCurrentUser";
 
 function PrivateRoute({ component: Component, ...rest }) {
-  const { data, loading, error } = useQuery(GET_CURRENT_USER_QUERY);
+  const { currentUser, loading, error } = useCurrentUser();
   if (loading) {
     return <p>Loading...</p>;
   }
   if (error) {
     return <p>ERROR</p>;
   }
-  const { currentUser } = data;
   return (
     <Route
       {...rest}
