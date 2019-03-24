@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useQuery, useApolloClient } from "react-apollo-hooks";
 import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
+import Button from "@material-ui/core/Button";
+
 import GET_CURRENT_USER_QUERY from "../graphql/query/getCurrentUser.gql";
 
 const GET_AUTH_URI = gql`
@@ -45,9 +47,14 @@ export default function Connect(props) {
   return (
     <>
       <h2>Connect</h2>
-      <button onClick={connect} disabled={connecting}>
+      <Button
+        onClick={connect}
+        disabled={connecting}
+        variant="contained"
+        color="primary"
+      >
         Connect to QuickBooksOnline
-      </button>
+      </Button>
     </>
   );
 }

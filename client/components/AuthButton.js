@@ -1,6 +1,8 @@
 import React from "react";
 import { useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
+import Button from "@material-ui/core/Button";
+
 import GET_CURRENT_USER_QUERY from "../graphql/query/getCurrentUser.gql";
 
 const SIGNOUT_MUTATION = gql`
@@ -16,5 +18,5 @@ export default function AuthButton(props) {
     refetchQueries: [{ query: GET_CURRENT_USER_QUERY }]
   });
 
-  return <button onClick={signOutMutation}>Sign Out</button>;
+  return <Button onClick={signOutMutation}>Sign Out</Button>;
 }
