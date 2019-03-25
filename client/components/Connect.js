@@ -3,6 +3,9 @@ import { useApolloClient } from "react-apollo-hooks";
 import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import styled from "styled-components";
 
 import useCurrentUser from "../hooks/useCurrentUser";
 
@@ -11,6 +14,18 @@ const GET_AUTH_URI = gql`
     getAuthUri {
       uri
     }
+  }
+`;
+
+const StyledConnectPage = styled(Paper)`
+  width: 100%;
+  margin-top: 3rem;
+  h2 {
+    padding-left: 24px;
+    padding-top: 1.5rem;
+  }
+  button {
+    margin: 24px;
   }
 `;
 
@@ -44,8 +59,10 @@ export default function Connect(props) {
     );
   }
   return (
-    <>
-      <h2>Connect</h2>
+    <StyledConnectPage>
+      <Typography variant="h2" color="inherit">
+        Connect
+      </Typography>
       <Button
         onClick={connect}
         disabled={connecting}
@@ -54,6 +71,6 @@ export default function Connect(props) {
       >
         Connect to QuickBooksOnline
       </Button>
-    </>
+    </StyledConnectPage>
   );
 }

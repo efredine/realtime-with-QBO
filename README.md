@@ -4,7 +4,7 @@ This is a work in progress.
 
 The idea is to build a demonstration of real-time integration with the [QuickBooks Online API](https://developer.intuit.com/app/developer/homepage). I imagine it as a very small subset of what I do in my work at [Beanworks](https://www.beanworks.com/) where all edits to the accounting data propagate in real-time.
 
-So far it allows a user to sign in to QuickBooks Online using OAuth 2, retrieves all the bills and displays them in an un-styled table.
+So far it allows a user to sign in to QuickBooks Online using OAuth 2, retrieves all the bills and displays them in a table.
 
 The OAuth part is perhaps a little bit interesting in it's own right, because it's done using `React`, `React Router`, `GraphQL`, `Apollo Client` with `Hooks` and `GraphQL Yoga` on the back-end. The QuickBooks developer portal provides excellent documentation and examples on how to get started. But it's all a bit old school. This provides an example of how it might look in a modern application!
 

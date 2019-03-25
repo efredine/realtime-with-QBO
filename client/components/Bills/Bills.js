@@ -5,6 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 
 import Money from "../Money";
@@ -13,6 +14,10 @@ const StyledTableContainer = styled(Paper)`
   width: 100%;
   margin-top: 3rem;
   overflow-x: auto;
+  #tableTitle {
+    padding-left: 24px;
+    padding-top: 1.5rem;
+  }
   table {
     min-width: 800;
     th {
@@ -58,6 +63,9 @@ const BillRow = ({ bill, index }) => {
 export default function Bills({ bills }) {
   return (
     <StyledTableContainer>
+      <Typography variant="h2" id="tableTitle">
+        Bills
+      </Typography>
       <Table>
         <TableHead>
           <TableRow>

@@ -5,13 +5,7 @@ import BillsContainer from "./Bills";
 
 function Index({ currentUser }) {
   console.log({ currentUser });
-  return (
-    <>
-      <h2>Hello {currentUser.givenName}</h2>
-      <AuthButton />
-      <BillsContainer />
-    </>
-  );
+  return <BillsContainer />;
 }
 
 Index.propTypes = {
