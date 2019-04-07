@@ -29,6 +29,7 @@ async function getAuthUri() {
   const state = (await randomBytesPromisified(20)).toString("hex");
   const oauthClient = new OAuthClient(config);
   pendingAuthorizations.set(state, oauthClient);
+  console.log("Getting auth URI:", { state, config });
   return {
     uri: oauthClient.authorizeUri({
       scope: [
